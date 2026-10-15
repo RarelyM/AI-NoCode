@@ -16,6 +16,9 @@ public class HtmlCodeParser implements CodeParser<HtmlCodeResult> {
 
     private static final Pattern HTML_CODE_PATTERN = Pattern.compile("```html\\s*\\n([\\s\\S]*?)```", Pattern.CASE_INSENSITIVE);
 
+    /** 起始围栏（无闭合围栏时的兜底匹配）：模型输出被 max-tokens 截断时闭合 ``` 会缺失 */
+    private static final Pattern HTML_OPEN_FENCE_PATTERN = Pattern.compile("```html\\s*\\n", Pattern.CASE_INSENSITIVE);
+
     @Override
     public HtmlCodeResult parseCode(String codeContent) {
         HtmlCodeResult result = new HtmlCodeResult();
@@ -41,6 +44,12 @@ public class HtmlCodeParser implements CodeParser<HtmlCodeResult> {
         Matcher matcher = HTML_CODE_PATTERN.matcher(content);
         if (matcher.find()) {
             return matcher.group(1);
+        }
+        // 截断兜底：有起始围栏但没有闭合围栏，取起始围栏之后的全部内容
+        Matcher openMatcher = HTML_OPEN_FENCE_PATTERN.matcher(content);
+        if (openMatcher.find()) {
+            log.warn("HTML 代码块未闭合（输出可能被 max-tokens 截断），已提取起始围栏之后的内容");
+            return content.substring(openMatcher.end());
         }
         return null;
     }

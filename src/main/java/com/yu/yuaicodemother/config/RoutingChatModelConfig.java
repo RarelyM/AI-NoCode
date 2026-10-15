@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import java.time.Duration;
+
 @Configuration
 @ConfigurationProperties(prefix = "routing-chat-model")
 @Data
@@ -33,6 +35,7 @@ public class RoutingChatModelConfig {
                 .baseUrl(baseUrl)
                 .modelName(modelName)
                 .maxTokens(maxTokens)
+                .timeout(Duration.ofSeconds(120))
                 .logRequests(logRequests)
                 .logResponses(logResponses)
                 .build();

@@ -63,18 +63,26 @@ public class JsonMessageStreamHandler {
                 })
                 .filter(StrUtil::isNotEmpty) // 过滤空字串
                 .doOnComplete(() -> {
-                    // 流式响应完成后，添加 AI 消息到对话历史
+                    // 流式响应完成后，添加 AI 消息到对话历史；保存失败仅记日志，避免异常击穿 SSE 流
                     String aiResponse = chatHistoryStringBuilder.toString();
-                    chatHistoryService.addChatMessage(appId, aiResponse, ChatHistoryMessageTypeEnum.AI.getValue(),
-                            loginUser.getId());
+                    try {
+                        chatHistoryService.addChatMessage(appId, aiResponse, ChatHistoryMessageTypeEnum.AI.getValue(),
+                                loginUser.getId());
+                    } catch (Exception e) {
+                        log.error("生成完成后保存对话历史失败: appId={}", appId, e);
+                    }
                     String projectDir = AppConstant.CODE_OUTPUT_ROOT_DIR + "/vue_project_" + appId;
                     vueProjectBuilder.buildProjectAsync(projectDir);
                 })
                 .doOnError(error -> {
                     // 如果AI回复失败，也要记录错误消息
                     String errorMessage = "AI回复失败: " + error.getMessage();
-                    chatHistoryService.addChatMessage(appId, errorMessage, ChatHistoryMessageTypeEnum.AI.getValue(),
-                            loginUser.getId());
+                    try {
+                        chatHistoryService.addChatMessage(appId, errorMessage, ChatHistoryMessageTypeEnum.AI.getValue(),
+                                loginUser.getId());
+                    } catch (Exception e) {
+                        log.error("生成失败后保存对话历史失败: appId={}", appId, e);
+                    }
                 });
     }
 

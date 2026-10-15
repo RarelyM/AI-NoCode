@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
 import java.util.List;
 
 @Configuration
@@ -41,6 +42,7 @@ public class ReasoningStreamingChatModelConfig {
                 .baseUrl(baseUrl)
                 .modelName(modelName)
                 .maxTokens(maxTokens)
+                .timeout(Duration.ofSeconds(300))
                 .listeners(List.of(aiModelMonitorListener))
                 .logRequests(logRequests)
                 .logResponses(logResponses)

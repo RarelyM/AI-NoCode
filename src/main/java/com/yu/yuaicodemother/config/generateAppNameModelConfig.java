@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
+
 
 @Configuration
 @Data
@@ -32,6 +34,7 @@ public class generateAppNameModelConfig {
                 .apiKey(apiKey)
                 .baseUrl(baseUrl)
                 .maxTokens(maxTokens)
+                .timeout(Duration.ofSeconds(120))
                 .logRequests(logRequests)
                 .logResponses(logResponses)
                 .build();

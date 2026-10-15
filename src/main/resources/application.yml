@@ -6,9 +6,9 @@ spring:
   # mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.100.128:3307/yu_ai_code_mother
+    url: jdbc:mysql://127.0.0.1:3306/yu_ai_code_mother?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: 123
+    password: 1234
     hikari:
       connection-timeout: 30000
       idle-timeout: 600000
@@ -18,11 +18,15 @@ spring:
   # redis
   data:
     redis:
-      host: 192.168.100.128
+      host: localhost  # 改为本地
       port: 6379
       database: 0
       password:
       ttl: 3600 #缓存过期时间 (秒)
+  # 放宽异步请求超时，避免 SSE 流式生成中途被服务端断开（毫秒，30 分钟，Vue 工程逐文件写入耗时较长）
+  mvc:
+    async:
+      request-timeout: 1800000
 server:
   port: 8123
   servlet:
@@ -31,27 +35,27 @@ server:
 langchain4j:
   open-ai:
     chat-model:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-      api-key: <Your API Key>
-      model-name: qwen-plus
+      base-url: https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+      api-key: ${aliyun-api-key}
+      model-name: qwen3.8-flash
       log-requests: true
       log-responses: true
-      max-tokens: 8192
+      max-tokens: 16384
     #      max-retries: 3
     #      strict-json-schema: true
     #      response-format: json_object
     streaming-chat-model:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-      api-key: <Your API Key>
-      model-name: qwen-plus
-      max-tokens: 8192
+      base-url: https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+      api-key: ${aliyun-api-key}
+      model-name: qwen3.8-flash
+      max-tokens: 16384
       log-requests: true
       log-responses: true
     #      max-retries: 1
     reasoning-chat-model:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-      api-key: <Your API Key>
-      model-name: qwen-plus
+      base-url: https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+      api-key: ${aliyun-api-key}
+      model-name: qwen3.8-flash
       max-tokens: 32768
       log-requests: true
       log-responses: true
@@ -60,12 +64,20 @@ langchain4j:
   #      max-retries: 2
   # 智能路由 AI 模型配置
 routing-chat-model:
-  base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-  api-key: <Your API Key>
-  model-name: qwen-plus
+  base-url: https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+  api-key: ${aliyun-api-key}
+  model-name: qwen3.8-flash
   max-tokens: 1000
   log-requests: false
   log-responses: false
+# 应用名称生成 AI 模型配置
+generate-app-name-model:
+  base-url: https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+  api-key: ${aliyun-api-key}
+  model-name: qwen3.8-flash
+  max-tokens: 1000
+  log-requests: true
+  log-responses: true
 # 添加 COS 对象存储配置（需要从腾讯云获取）
 cos:
   client:

@@ -8,7 +8,6 @@ import com.yu.yuaicodemother.exception.BusinessException;
 import com.yu.yuaicodemother.exception.ErrorCode;
 import com.yu.yuaicodemother.model.enums.CodeGenTypeEnum;
 import com.yu.yuaicodemother.service.ChatHistoryService;
-import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.data.message.ToolExecutionResultMessage;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
@@ -33,9 +32,6 @@ public class AiCodeGeneratorServiceFactory {
 
     @Resource(name = "reasoningStreamingChatModel")
     private StreamingChatModel reasoningStreamingChatModel;
-
-    @Resource
-    private RedisChatMemoryStore redisChatMemoryStore;
 
     @Resource
     private ChatHistoryService chatHistoryService;
@@ -74,11 +70,11 @@ public class AiCodeGeneratorServiceFactory {
      * 创建新的 AI 服务实例
      */
     private AiCodeGeneratorService createAiCodeGeneratorService(long appId, CodeGenTypeEnum codeGenType) {
-        // 根据 appId 构建独立的对话记忆
+        // 根据 appId 构建独立的对话记忆（使用内存存储，避免依赖 RedisJSON 模块）
+        // TODO: 生产环境建议使用 Redis Stack 或安装 RedisJSON 模块后切换回 redisChatMemoryStore
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory
                 .builder()
                 .id(appId)
-                .chatMemoryStore(redisChatMemoryStore)
                 .maxMessages(100)
                 .build();
         // 从数据库加载历史对话到记忆中
@@ -91,7 +87,7 @@ public class AiCodeGeneratorServiceFactory {
                     .chatMemoryProvider(memoryId -> chatMemory)
                     .tools(toolManager.getAllTools())
                     .inputGuardrails(new PromptSafetyInputGuardrail())
-                    .maxSequentialToolsInvocations(20) //最多连续调用20次工具 TODO 具体为多少得根据不同模型进行测试
+                    .maxSequentialToolsInvocations(50) //完整 Vue 工程通常需 30+ 次工具调用（逐文件写入），20 会中途截断 TODO 具体为多少得根据不同模型进行测试
 //                    .outputGuardrails(new RetryOutputGuardrail())   可能会导致流式输出的响应不及时
                     .hallucinatedToolNameStrategy(toolExecutionRequest -> ToolExecutionResultMessage.from(
                             toolExecutionRequest, "Error: there is no tool called " + toolExecutionRequest.name()

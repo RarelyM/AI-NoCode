@@ -44,6 +44,7 @@ create table app
     editTime     datetime default CURRENT_TIMESTAMP not null comment '编辑时间',
     createTime   datetime default CURRENT_TIMESTAMP not null comment '创建时间',
     updateTime   datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    visual_range TINYINT(1) NOT NULL DEFAULT 1      COMMENT '可见范围(默认为1公开,0私有)',
     isDelete     tinyint  default 0                 not null comment '是否删除',
     UNIQUE KEY uk_deployKey (deployKey), -- 确保部署标识唯一
     INDEX idx_appName (appName),         -- 提升基于应用名称的查询性能
@@ -54,7 +55,7 @@ create table app
 create table chat_history
 (
     id          bigint auto_increment comment 'id' primary key,
-    message     text                               not null comment '消息',
+    message     longtext                           not null comment '消息',
     messageType varchar(32)                        not null comment 'user/ai',
     appId       bigint                             not null comment '应用id',
     userId      bigint                             not null comment '创建用户id',
@@ -97,5 +98,6 @@ CREATE INDEX idx_gen_status ON app(gen_status);
 -- 精选与置顶功能扩展
 ALTER TABLE app ADD COLUMN featured_status INT DEFAULT 0 COMMENT '精选状态：0-未申请, 1-申请中, 2-已精选, 3-已拒绝';
 ALTER TABLE app ADD COLUMN user_priority INT DEFAULT 0 COMMENT '用户个人优先级';
+ALTER TABLE app ADD COLUMN review_message VARCHAR(512) COMMENT '审核信息（拒绝原因等）';
 CREATE INDEX idx_featured_status ON app(featured_status);
 CREATE INDEX idx_user_priority ON app(user_priority);

@@ -1,4 +1,4 @@
-﻿package com.yu.yuaicodemother.core.file.processor;
+package com.yu.yuaicodemother.core.file.processor;
 
 import com.yu.yuaicodemother.manager.TencentOcrManager;
 import com.yu.yuaicodemother.model.enums.ProcessStatusEnum;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 class PdfFileProcessorTest {
 
     @TempDir
-    Path tempDir = System.;
+    Path tempDir = Path.of(System.getProperty("java.io.tmpdir"));
 
     @Test
     void shouldExtractPdfTextWithoutOcr() throws Exception {
