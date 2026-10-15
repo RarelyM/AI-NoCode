@@ -1,0 +1,379 @@
+declare namespace API {
+  type AppChatFile = {
+    url?: string
+    fileName?: string
+    fileType?: string
+  }
+
+  type AppAddRequest = {
+    initPrompt?: string
+    fileList?: AppChatFile[]
+  }
+
+  type AppAdminUpdateRequest = {
+    id?: number
+    appName?: string
+    cover?: string
+    priority?: number
+    featuredStatus?: number
+  }
+
+  type AppDeployRequest = {
+    appId?: number
+  }
+
+  type AppQueryRequest = {
+    pageNum?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    id?: number
+    appName?: string
+    cover?: string
+    initPrompt?: string
+    codeGenType?: string
+    deployKey?: string
+    priority?: number
+    featuredStatus?: number
+    userId?: number
+  }
+
+  type AppUpdateRequest = {
+    id?: number
+    appName?: string
+  }
+
+  type AppReviewRequest = {
+    id?: number
+    featuredStatus?: number
+    reviewMessage?: string
+  }
+
+  type AppVO = {
+
+    id?: number
+    appName?: string
+    cover?: string
+    initPrompt?: string
+    codeGenType?: string
+    deployKey?: string
+    deployedTime?: string
+    priority?: number
+    featuredStatus?: number
+    userPriority?: number
+    reviewMessage?: string
+    userId?: number
+
+    currentVersion?: number
+    deployStatus?: number
+    genStatus?: number
+    createTime?: string
+    updateTime?: string
+    user?: UserVO
+    visualRange: boolean
+  }
+
+  type AppDeployControlRequest = {
+    appId?: number
+    deployStatus?: number
+  }
+
+  type BaseResponseInt = {
+    code?: number
+    data?: number
+    message?: string
+  }
+
+  type getGenStatusParams = {
+    appId: number
+  }
+
+
+  type BaseResponseAppVO = {
+    code?: number
+    data?: AppVO
+    message?: string
+  }
+
+  type BaseResponseBoolean = {
+    code?: number
+    data?: boolean
+    message?: string
+  }
+
+  type BaseResponseLoginUserVO = {
+    code?: number
+    data?: LoginUserVO
+    message?: string
+  }
+
+  type BaseResponseLong = {
+    code?: number
+    data?: number
+    message?: string
+  }
+
+  type BaseResponsePageAppVO = {
+    code?: number
+    data?: PageAppVO
+    message?: string
+  }
+
+  type BaseResponsePageChatHistory = {
+    code?: number
+    data?: PageChatHistory
+    message?: string
+  }
+
+  type BaseResponsePageUserVO = {
+    code?: number
+    data?: PageUserVO
+    message?: string
+  }
+
+  type BaseResponseString = {
+    code?: number
+    data?: string
+    message?: string
+  }
+
+  type BaseResponseUser = {
+    code?: number
+    data?: User
+    message?: string
+  }
+
+  type BaseResponseUserVO = {
+    code?: number
+    data?: UserVO
+    message?: string
+  }
+
+  type ChatHistory = {
+    id?: number
+    message?: string
+    messageType?: string
+    appId?: number
+    userId?: number
+    createTime?: string
+    updateTime?: string
+    isDelete?: number
+  }
+
+  type ChatHistoryQueryRequest = {
+    pageNum?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    id?: number
+    message?: string
+    messageType?: string
+    appId?: number
+    userId?: number
+    lastCreateTime?: string
+  }
+
+  type chatToGenCodeParams = {
+    appId: number
+    message: string
+  }
+
+  type DeleteRequest = {
+    id?: number
+  }
+
+  type downloadAppCodeParams = {
+    appId: number
+  }
+
+  type updateAppVisualRangeParams = {
+    appId: number
+    visualRange: boolean
+  }
+
+  type applyForFeaturedParams = {
+    appId: number
+  }
+
+  type updateMyPriorityParams = {
+    appId: number
+    userPriority: number
+  }
+
+  type getAppVOByIdByAdminParams = {
+    id: number
+  }
+
+  type getAppVOByIdParams = {
+    id: number
+  }
+
+  type getUserByIdParams = {
+    id: number
+  }
+
+  type getUserVOByIdParams = {
+    id: number
+  }
+
+  type listAppChatHistoryParams = {
+    appId: number
+    pageSize?: number
+    lastCreateTime?: string
+  }
+
+  type LoginUserVO = {
+    id?: number
+    userAccount?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+    createTime?: string
+    updateTime?: string
+  }
+
+  type PageAppVO = {
+    records?: AppVO[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageChatHistory = {
+    records?: ChatHistory[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageUserVO = {
+    records?: UserVO[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type ServerSentEventString = true
+
+  type serveStaticResourceParams = {
+    deployKey: string
+  }
+
+  type User = {
+    id?: number
+    userAccount?: string
+    userPassword?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+    editTime?: string
+    createTime?: string
+    updateTime?: string
+    isDelete?: number
+  }
+
+  type UserAddRequest = {
+    userName?: string
+    userAccount?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserLoginRequest = {
+    userAccount?: string
+    userPassword?: string
+  }
+
+  type UserQueryRequest = {
+    pageNum?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    id?: number
+    userName?: string
+    userAccount?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserRegisterRequest = {
+    userAccount?: string
+    userPassword?: string
+    checkPassword?: string
+  }
+
+  type UserUpdateRequest = {
+    id?: number
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserVO = {
+    id?: number
+    userAccount?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+    createTime?: string
+  }
+
+  type AppVersionVO = {
+    id?: number
+    appId?: number
+    version?: number
+    changeLog?: string
+    createTime?: string
+  }
+
+  type FileDiff = {
+    fileName?: string
+    oldContent?: string
+    newContent?: string
+    diffLines?: string[]
+  }
+
+  type AppVersionDiffVO = {
+    oldVersion?: number
+    newVersion?: number
+    diffs?: FileDiff[]
+  }
+
+  type BaseResponseAppVersionVOList = {
+    code?: number
+    data?: AppVersionVO[]
+    message?: string
+  }
+
+  type BaseResponseAppVersionDiffVO = {
+    code?: number
+    data?: AppVersionDiffVO
+    message?: string
+  }
+
+  type listVersionsParams = {
+    appId: number
+  }
+
+  type rollbackVersionParams = {
+    appId: number
+    version: number
+  }
+
+  type compareVersionsParams = {
+    appId: number
+    v1: number
+    v2: number
+  }
+}

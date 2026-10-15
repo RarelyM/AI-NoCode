@@ -1,0 +1,55 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+out
+
+### CUSTOM ###
+application-local.yml
+tmp
+logs
+.trae
+AliyunJavaAgent
+yu-ai-code-microservice
+.trae
+.claude
+skills
+.agent
+*.docx
+*.drawio
+yu-ai-code-microservice
+bugExperience
+experience
+.opencode
+*.txt
+summary
+my-skill
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+/AliyunJavaAgent
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+version
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+summary
+### VS Code ###
+.vscode/
